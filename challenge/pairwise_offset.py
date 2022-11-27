@@ -14,7 +14,5 @@ def pairwise_offset(sequence, fillvalue='*', offset=0):
 
         new_tuple = (first_value, second_value)
         return_list.append(new_tuple)
-        print(return_list)
     return return_list
 
-pairwise_offset([(1, 2), (3, 4), (5, 6)], offset=4)
