@@ -13,7 +13,17 @@ def get_data():
 def get_rhines_times():
     """Return a list of Jennifer Rhines' race times"""
     races = get_data()
-    pass
+    rhines_time = []
+
+    def rhines_time_func(line):
+        return re.findall(r'\S+', line.strip(' '))[0]
+
+    for line in races.splitlines():
+        if 'Jennifer Rhines' in line:
+            rhines_time.append(rhines_time_func(line))
+
+    return rhines_time
+
 
 def get_average():
     """Return Jennifer Rhines' average race time in the format:
@@ -22,4 +32,16 @@ def get_average():
        s corresponds to a seconds digit
        M corresponds to a milliseconds digit (no rounding, just the single digit)"""
     racetimes = get_rhines_times()
-    pass
+    total = datetime.timedelta()
+    for time in racetimes:
+        try:
+            time = time.replace('.', ':')
+            minutes, seconds, milliseconds = time.split(':')
+            total += datetime.timedelta(minutes=int(minutes), seconds=int(seconds), milliseconds=int(milliseconds))
+        except:
+            minutes, seconds = time.split(':')
+            total += datetime.timedelta(minutes=int(minutes), seconds=int(seconds))
+
+        avg_time = f'{total/len(racetimes)}'[2:-5]
+
+    return avg_time
